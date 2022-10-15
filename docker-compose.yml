@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:12
+    restart: always
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_USER: zuju_user
+      POSTGRES_PASSWORD: zuju_pwd
+      POSTGRES_DB: zuju_db_name
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    command: ./docker-entrypoint.sh
+    working_dir: /usr/src/app
+    environment:
+      DATABASE_HOST: db
+      DJANGO_SETTINGS_MODULE: zuju.local_settings
+      DATABASE_USER: zuju_user
+      DATABASE_PASSWORD: zuju_pwd
+      DATABASE_NAME: zuju_db_name
+    depends_on:
+      - "db"
+    volumes:
+      - ".:/usr/src/app"
