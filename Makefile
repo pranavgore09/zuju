@@ -35,4 +35,11 @@ dbshell:
 bash:
 	docker-compose exec web bash
 
+pipinstall:
+	docker-compose exec web pip install -r requirements/base.txt
+	docker-compose exec web pip install -r requirements/dev.txt
+	docker-compose exec web pip install -r requirements/test.txt
+
+loaddata:
+	docker-compose exec web ./manage.py load_data
 
