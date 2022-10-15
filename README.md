@@ -80,7 +80,7 @@ Visit http://localhost:8000/schema/ for documentation.
 - Click on `/fixtures/calendar/{month}` API
 - Click on `Try out` on right top of that section. (Text field is now accessible)
 - Enter a valid month from 1-12
-- Copy a valid tournament UUID from [tournaments-link](http://localhost:8000/admin/tournaments/tournaments/) and paste it in "tournament_uuid" field
+- Copy a valid tournament UUID from [tournaments-link](http://localhost:8000/admin/tournaments/tournament/) and paste it in "tournament_uuid" field
 - Click on `Execute`
 - Verify the response. Each record contains "date <> match_count"
 - FE can use this API to show clickable-buttons on calendar view
