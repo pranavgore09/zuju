@@ -14,7 +14,6 @@ class Command(BaseCommand):
     '''
 
     def handle(self, *args, **options):
-        print(options)
         teams = TeamApi.bulk_create(count=settings.DEFAULT_TEAM_COUNT)
         tournaments = TournamentApi.bulk_create(
             count=settings.DEFAULT_TOURNAMENT_COUNT)

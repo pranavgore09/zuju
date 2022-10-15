@@ -15,7 +15,9 @@ from teams.models import Team
 
 def date_range(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
-        yield start_date + timedelta(n)
+        date = start_date + timedelta(n)
+        date = date.replace(second=0, microsecond=0)
+        yield date
 
 
 class FixtureApi:
@@ -28,8 +30,6 @@ class FixtureApi:
         start_at = fixture_data['start_at']
         end_at = fixture_data['end_at']
         weekday = fixture_data['weekday']
-
-        print("fixture_data=", fixture_data)
         return Fixture.objects.get_or_create(
             tournament_id=tournament,
             home_team_id=home_team,
@@ -68,7 +68,6 @@ class FixtureApi:
                 fixture_end_at = fixture_start_at + timedelta(minutes=90)
                 for _ in range(fixtures_per_day):
                     teams = random.sample(available_team_ids, 2)
-                    print("random sample IDs ", teams)
                     fixture_data['home_team'] = teams[0]
                     fixture_data['away_team'] = teams[1]
                     fixture_data['start_at'] = fixture_start_at

@@ -41,7 +41,7 @@ Let's feed some data to the system
 >`make loaddata`
 
 
-If you have not changed any of the project configurations, then it will create about ~240 fixtures for one tournament. This helps in testing the application from openapi doc.
+If you have not changed any of the project configurations, then it will create about ~250 fixtures for one tournament. This helps in testing the application from openapi doc.
 
 
 Visit [fixtures-link](http://localhost:8000/admin/fixtures/fixture/) to verify all fixtures are created as expected.

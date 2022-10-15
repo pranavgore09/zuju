@@ -20,7 +20,7 @@ class TeamApi:
         fake = Faker()
         fake.add_provider(company)
         for i in range(count):
-            name = fake.company()
+            name = fake.company()[:10]
             team, _ = TeamApi.get_or_create(name=name)
             teams.append(team)
         return teams

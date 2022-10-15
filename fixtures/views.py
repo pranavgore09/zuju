@@ -33,10 +33,11 @@ class ListFixturesByCalendar(ListAPIView):
             Fixture.objects.none()
 
         month = self.kwargs.get('month', 1)
-        return Fixture.objects.filter(
-            tournament__uuid=tournament_uuid,
-            start_at__month=month,
-        ).values('start_at__date', ).annotate(
-            fixture_count=Count('start_at__date', ),
-            date=F('start_at__date', ),
-        ).order_by('start_at__date')
+        return list(
+            Fixture.objects.filter(
+                tournament__uuid=tournament_uuid,
+                start_at__month=month,
+            ).values('start_at__date', ).annotate(
+                fixture_count=Count('start_at__date', ),
+                date=F('start_at__date', ),
+            ).order_by('start_at__date'))

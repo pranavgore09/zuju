@@ -14,12 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view as swagger_get_schema_view
 
-from fixtures.views import (ListFixtures, ListFixturesByCalendar,
-                            fixtures_by_calendar, list_fixtures)
+from fixtures.views import ListFixtures, ListFixturesByCalendar
 
 schema_view = swagger_get_schema_view(
     openapi.Info(
@@ -44,8 +43,11 @@ urlpatterns = [
 
     # List fixtures for tournament in calendar view
     path('tournament/<uuid:tournament_uuid>/fixtures/calendar/<int:month>',
-         ListFixturesByCalendar.as_view()),
+         ListFixturesByCalendar.as_view(),
+         name='fixture_by_cal'),
 
     # List fixtures for tournament
-    path('tournament/<uuid:tournament_uuid>/fixtures', ListFixtures.as_view()),
+    path('tournament/<uuid:tournament_uuid>/fixtures',
+         ListFixtures.as_view(),
+         name='fixture_list'),
 ]

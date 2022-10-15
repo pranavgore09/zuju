@@ -43,3 +43,5 @@ pipinstall:
 loaddata:
 	docker-compose exec web ./manage.py load_data
 
+test:
+	docker-compose up test

@@ -29,3 +29,12 @@ services:
       - "db"
     volumes:
       - ".:/usr/src/app"
+
+  test:
+    build: .
+    command: ./docker-entrypoint-test.sh
+    environment:
+      DATABASE_HOST: db
+    working_dir: /usr/src/app
+    volumes:
+      - ".:/usr/src/app"

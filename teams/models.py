@@ -5,7 +5,7 @@ from z_common.models import BaseDateTimeUUIDModel
 
 # Teams can be created as a different app
 class Team(BaseDateTimeUUIDModel):
-    name = models.CharField(max_length=32, unique=True)
+    name = models.CharField(max_length=256, unique=True)
 
     def __str__(self) -> str:
         return f'Team:{self.name}'

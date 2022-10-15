@@ -25,7 +25,7 @@ class TournamentApi:
 
     @classmethod
     def bulk_create(cls, *args, **kwargs) -> List[Tournament]:
-        count = kwargs['count']
+        count = kwargs.get('count', settings.DEFAULT_TOURNAMENT_COUNT)
         months_in_past = settings.DEFAULT_MONTHS_IN_PAST
         days_in_past = 30 * months_in_past
         total_tournament_months = settings.DEFAULT_TOURNAMENT_DURATION_IN_MONTHS
