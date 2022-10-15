@@ -1,3 +1,6 @@
+import random
+
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from fixtures.api import FixtureApi
@@ -12,7 +15,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print(options)
-        teams = TeamApi.bulk_create(count=5)
-        tournaments = TournamentApi.bulk_create(count=1)
-        fixtures_t1 = FixtureApi.bulk_create(tournament=tournaments[0])
-        # fixtures_t2 = FixtureApi.bulk_create(tournament=tournaments[1])
+        teams = TeamApi.bulk_create(count=settings.DEFAULT_TEAM_COUNT)
+        tournaments = TournamentApi.bulk_create(
+            count=settings.DEFAULT_TOURNAMENT_COUNT)
+        fixtures = FixtureApi.bulk_create(
+            tournament=random.sample(tournaments, 1))

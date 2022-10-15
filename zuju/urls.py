@@ -37,7 +37,7 @@ urlpatterns = [
         schema_view.with_ui('swagger', cache_timeout=0),
         name='swagger_schema',
     ),
+    path('tournament/<uuid:tournament_uuid>/fixtures/calendar/<int:month>',
+         ListFixturesByCalendar.as_view()),
     path('tournament/<uuid:tournament_uuid>/fixtures', ListFixtures.as_view()),
-    path('tournament/<uuid:tournament_uuid>/calendar/<int:month>',
-         ListFixturesByCalendar.as_view())
 ]
