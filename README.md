@@ -107,12 +107,12 @@ http://localhost:8000/calendar/10/
 - Teams / Tournaments / Fixtures are other django apps
     - Each app contains a models.py. It describes all database tables schemas
     - Each app contains serializer.py. It describes how the object will be transformed into an dictionary in the API response
-    - Each app contains api.py. This is data-layer of each model. All CRUD should happen through this layer only.
+    - Each app contains api.py. This is data-layer of each model. All CRUD should happen through this layer only. (Acts as a Factory)
     - Each app contains admin.py. It describes how admin panel will be shown to user. It is highly customized by adding custom-search feature. I have followed [HakiBenita's blog](https://hakibenita.com/how-to-add-a-text-filter-to-django-admin) for the same. I hope that is okay. It is very helpful to debug the system.
 - load_data is a command line tool/script that helps me build sample dataset for demo purposes
 - I am using `Faker` to create random team names, please enjoy those funny names :)
 
-### Acceptance Criteria
+### Acceptance Criteria (as mentioned in assignment)
 ####  Fixtures Listing
 - API should return all fixtures under one tournament
 - API should return details of each fixture
@@ -136,6 +136,11 @@ http://localhost:8000/calendar/10/
 - UI can render the calendar view and allow user to click only when the "count" of fixtures on that day is greater than zero.
 - Pagination is NOT used here, this API works on input month input. Only given month's records will be returned
 
+### Expectations (as mentioned in assignment)
+- Code repository is accessible and has a detailed README.md
+- APIs are documented and available to test at http://localhost:8000/schema/ (Only after running the application)
+- With permission, I am using Python stack for the assignment.
+- Few tests are added in the code, more can be done.
 
 ### Improvements I would like to make
 - Logging can be added across the application, easy to debugging

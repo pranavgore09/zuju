@@ -77,28 +77,3 @@ class FixtureApi:
                     team, _ = FixtureApi.get_or_create(fixture_data)
                     fixtures.append(team)
         return fixtures
-
-    @classmethod
-    def list_all(cls):
-        fixtures = Fixture.objects.all().order_by('-start_at')
-        serializer = FixtureSerializer(fixtures, many=True)
-        return serializer.data
-
-    @classmethod
-    def calendar_view(cls, month=None, year=None):
-
-        # Fixture.objects.values('start_at__date').annotate(cnt=Count('start_at__date')).order_by()
-
-        now = timezone.make_aware(datetime.now())
-        if not year:
-            year = now.year
-        if not month:
-            month = now.month
-
-        filter_q = Q(
-            start_at__year=year,
-            start_at__month=month,
-        )
-        fixtures = Fixture.objects.filter(filter_q).order_by('-start_at')
-        serializer = FixtureSerializer(fixtures, many=True)
-        return serializer.data

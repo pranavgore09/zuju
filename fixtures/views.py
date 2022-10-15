@@ -11,22 +11,6 @@ from fixtures.pagination import FixtureCursorPagination
 from fixtures.serializers import FixtureByCalendarSerializer, FixtureSerializer
 
 
-@api_view(http_method_names=[
-    'GET',
-])
-def list_fixtures(request: Request):
-    response = FixtureApi.list_all()
-    return Response(data=response, status=status.HTTP_200_OK)
-
-
-@api_view(http_method_names=[
-    'GET',
-])
-def fixtures_by_calendar(request: Request, month=None):
-    response = FixtureApi.calendar_view(month)
-    return Response(data=response, status=status.HTTP_200_OK)
-
-
 class ListFixtures(ListAPIView):
 
     serializer_class = FixtureSerializer
@@ -49,8 +33,10 @@ class ListFixturesByCalendar(ListAPIView):
             Fixture.objects.none()
 
         month = self.kwargs.get('month', 1)
-        return Fixture.objects.filter(start_at__month=month, ).values(
-            'start_at__date', ).annotate(
-                fixture_count=Count('start_at__date', ),
-                date=F('start_at__date', ),
-            ).order_by('start_at__date')
+        return Fixture.objects.filter(
+            tournament__uuid=tournament_uuid,
+            start_at__month=month,
+        ).values('start_at__date', ).annotate(
+            fixture_count=Count('start_at__date', ),
+            date=F('start_at__date', ),
+        ).order_by('start_at__date')

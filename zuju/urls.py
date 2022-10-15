@@ -31,13 +31,21 @@ schema_view = swagger_get_schema_view(
 )
 
 urlpatterns = [
+
+    # Access Admin panel
     path('admin/', admin.site.urls),
+
+    # Access documentation
     path(
         'schema/',
         schema_view.with_ui('swagger', cache_timeout=0),
         name='swagger_schema',
     ),
+
+    # List fixtures for tournament in calendar view
     path('tournament/<uuid:tournament_uuid>/fixtures/calendar/<int:month>',
          ListFixturesByCalendar.as_view()),
+
+    # List fixtures for tournament
     path('tournament/<uuid:tournament_uuid>/fixtures', ListFixtures.as_view()),
 ]
