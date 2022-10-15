@@ -42,6 +42,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
+    'rest_framework',
 ]
 
 PROJECT_APPS = [

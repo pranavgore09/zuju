@@ -1,6 +1,10 @@
 import random
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import List, Tuple
+
+from django.db.models.query_utils import Q
+from django.utils import timezone
+from rest_framework import serializers
 
 from fixtures.models import Fixture
 from teams.models import Team
@@ -11,6 +15,28 @@ from teams.models import Team
 def date_range(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + timedelta(n)
+
+
+class FixtureSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Fixture
+        fields = (
+            'uuid',
+            'tournament',
+            'home_team',
+            'away_team',
+            'start_at',
+            'end_at',
+        )
+        read_only_fields = (
+            'uuid',
+            'tournament',
+            'home_team',
+            'away_team',
+            'start_at',
+            'end_at',
+        )
 
 
 class FixtureApi:
@@ -73,3 +99,25 @@ class FixtureApi:
                     team, _ = FixtureApi.get_or_create(fixture_data)
                     fixtures.append(team)
         return fixtures
+
+    @classmethod
+    def list_all(cls):
+        fixtures = Fixture.objects.all().order_by('-start_at')
+        serializer = FixtureSerializer(fixtures, many=True)
+        return serializer.data
+
+    @classmethod
+    def calendar_view(cls, month=None, year=None):
+        now = timezone.make_aware(datetime.now())
+        if not year:
+            year = now.year
+        if not month:
+            month = now.month
+
+        filter_q = Q(
+            start_at__year=year,
+            start_at__month=month,
+        )
+        fixtures = Fixture.objects.filter(filter_q).order_by('-start_at')
+        serializer = FixtureSerializer(fixtures, many=True)
+        return serializer.data

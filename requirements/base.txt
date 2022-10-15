@@ -1,2 +1,4 @@
 Django==3.2
 psycopg2==2.9.3
+djangorestframework==3.14.0
+
