@@ -16,6 +16,8 @@ Make sure that port 8000 is available and no other services are running. It is b
 2. Docker version `20.10.17, build 100c701`
 3. docker-compose version `1.29.2, build 5becea4c`
 
+<hr>
+
 ## Please follow the steps in given order
 
 First, we will initialize the current directory. This action will create required directories in the local folder. For production system this should not be required.
@@ -50,7 +52,17 @@ Visit [teams-link](http://localhost:8000/admin/teams/team/) to verify all teams 
 
 Visit [tournaments-link](http://localhost:8000/admin/tournaments/tournament/) to verify the tournament record.
 
+Run unit and integration tests (total 4 main test cases should pass)
+>`make test`
+
+<hr>
+
 ## Testing APIs via documentation
+
+
+Visit http://localhost:8000/schema/ for documentation.
+
+
 #####  Fixtures Listing
 - Open http://localhost:8000/schema/
 - Click on `/fixtures` API (first in the list)
@@ -72,8 +84,14 @@ Visit [tournaments-link](http://localhost:8000/admin/tournaments/tournament/) to
 - Click on `Execute`
 - Verify the response. Each record contains "date <> match_count"
 - FE can use this API to show clickable-buttons on calendar view
+- *Known Issues*:
+    - Only current year is being considered in current API response
+        - Ideally, It will be accepted from FE in query param and then use it in query
+    - Default value of FIXTURES_PER_DAY is 2 hence in the response it looks like all dates have same number of matches but in reality it is not the case. To test out, go ahead and create a new Fixture from admin panel, it will update the number in response.
 
-#### Constants that will change fixture count (Open local_settings.py and change if required)
+<hr>
+    
+### Constants that will change fixture count (Open local_settings.py and change if required)
 ```
 FIXTURES_PER_DAY : How many matches per day (default=2)
 FIXTURES_ON_WEEKDAY : Which days to schedule matches on (default=Fri, Sat, Sun)
@@ -87,14 +105,8 @@ DEFAULT_TOURNAMENT_COUNT: How many tournaments should be created (default=1)
 
 If you change the settings, you need to call `make loaddata` again to make that effect in database. This action will not remove any existing data but it will add more data to the database.
 
+<hr>
 
-Visit http://localhost:8000/schema/ for documentation.
-
-All Fixtures
-http://localhost:8000/fixtures/
-
-Calendar view
-http://localhost:8000/calendar/10/
 
 
 ### Project Structure
@@ -152,6 +164,8 @@ http://localhost:8000/calendar/10/
 - Application can be extended to include Players and more entities
 
 
+<hr>
+
 
 ### Applicaion tear down
 To stop the service and remove containers
@@ -169,6 +183,8 @@ To stop the service and remove containers
 > `make build`
 > `make dev`
 
+<hr>
+
 
 ## FAQ
 #### How to monitor server logs?
@@ -180,3 +196,4 @@ To follow application logs for dev purposes (uses "follow", you will have to use
 
 Alternatively run `make shellplus` or `make shell` to enter Django shell.
 
+<hr>

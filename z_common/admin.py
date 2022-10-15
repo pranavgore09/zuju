@@ -11,6 +11,10 @@ class BaseUUIDAdmin(admin.ModelAdmin):
         'created_at',
         'modified_at',
     )
+    list_filter = (
+        'created_at',
+        'modified_at',
+    )
 
 
 class InputFilter(admin.SimpleListFilter):

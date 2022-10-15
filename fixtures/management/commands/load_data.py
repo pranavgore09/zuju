@@ -18,4 +18,4 @@ class Command(BaseCommand):
         tournaments = TournamentApi.bulk_create(
             count=settings.DEFAULT_TOURNAMENT_COUNT)
         fixtures = FixtureApi.bulk_create(
-            tournament=random.sample(tournaments, 1))
+            tournament=random.sample(tournaments, 1)[0])

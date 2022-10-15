@@ -8,5 +8,5 @@ pip install -r requirements/test.txt
 
 # Start server
 echo "Starting server"
-./manage.py test  --settings=zuju.test_settings --failfast
+./manage.py test -v 3 --settings=zuju.test_settings --failfast
 

@@ -35,6 +35,10 @@ services:
     command: ./docker-entrypoint-test.sh
     environment:
       DATABASE_HOST: db
+      DJANGO_SETTINGS_MODULE: zuju.test_settings
+      DATABASE_USER: zuju_user
+      DATABASE_PASSWORD: zuju_pwd
+      DATABASE_NAME: zuju_db_name
     working_dir: /usr/src/app
     volumes:
       - ".:/usr/src/app"

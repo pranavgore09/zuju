@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db.models import Count, F
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -33,9 +35,11 @@ class ListFixturesByCalendar(ListAPIView):
             Fixture.objects.none()
 
         month = self.kwargs.get('month', 1)
+        year = self.kwargs.get('year', datetime.now().year)
         return list(
             Fixture.objects.filter(
                 tournament__uuid=tournament_uuid,
+                start_at__year=year,
                 start_at__month=month,
             ).values('start_at__date', ).annotate(
                 fixture_count=Count('start_at__date', ),
