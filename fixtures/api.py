@@ -1,12 +1,13 @@
 import random
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from typing import List, Tuple
 
+from django.conf import settings
 from django.db.models.query_utils import Q
 from django.utils import timezone
-from rest_framework import serializers
 
 from fixtures.models import Fixture
+from fixtures.serializers import FixtureSerializer
 from teams.models import Team
 
 # from dateutil.relativedelta import relativedelta
@@ -15,28 +16,6 @@ from teams.models import Team
 def date_range(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
         yield start_date + timedelta(n)
-
-
-class FixtureSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Fixture
-        fields = (
-            'uuid',
-            'tournament',
-            'home_team',
-            'away_team',
-            'start_at',
-            'end_at',
-        )
-        read_only_fields = (
-            'uuid',
-            'tournament',
-            'home_team',
-            'away_team',
-            'start_at',
-            'end_at',
-        )
 
 
 class FixtureApi:
@@ -62,13 +41,12 @@ class FixtureApi:
 
     @classmethod
     def bulk_create(cls, *args, **kwargs) -> List[Fixture]:
-        fixtures_per_day = kwargs.get('fixtures_per_day', 2)
+        fixtures_per_day = kwargs.get('fixtures_per_day',
+                                      settings.FIXTURES_PER_DAY)
         # ref: https://docs.python.org/3/library/datetime.html#datetime.datetime.weekday
         # Saturday=5, Sunday=6, Monday=0
-        fixtures_on_weekday = [
-            5,
-            6,
-        ]
+        fixtures_on_weekday = settings.FIXTURES_ON_WEEKDAY
+
         tournament = kwargs['tournament']
 
         fixture_data = {
@@ -88,7 +66,7 @@ class FixtureApi:
                 temp_date = single_date
                 fixture_start_at = temp_date.replace(hour=16)
                 fixture_end_at = fixture_start_at + timedelta(minutes=90)
-                for i in range(fixtures_per_day):
+                for _ in range(fixtures_per_day):
                     teams = random.sample(available_team_ids, 2)
                     print("random sample IDs ", teams)
                     fixture_data['home_team'] = teams[0]
@@ -108,6 +86,9 @@ class FixtureApi:
 
     @classmethod
     def calendar_view(cls, month=None, year=None):
+
+        # Fixture.objects.values('start_at__date').annotate(cnt=Count('start_at__date')).order_by()
+
         now = timezone.make_aware(datetime.now())
         if not year:
             year = now.year

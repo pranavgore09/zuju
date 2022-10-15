@@ -1,6 +1,3 @@
-import imp
-from enum import unique
-
 from django.db import models
 
 from z_common.models import BaseDateTimeUUIDModel
@@ -17,5 +14,6 @@ class Tournament(BaseDateTimeUUIDModel):
 
     def __str__(self) -> str:
         return f'Tournament:{self.title}'
+
 
 # Many-To-Many table can be created for Team<>Tournament

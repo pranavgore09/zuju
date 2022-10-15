@@ -15,13 +15,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view as swagger_get_schema_view
 
-from fixtures.views import fixtures_by_calendar, list_fixtures
+from fixtures.views import (ListFixtures, ListFixturesByCalendar,
+                            fixtures_by_calendar, list_fixtures)
+
+schema_view = swagger_get_schema_view(
+    openapi.Info(
+        title='Fixture APIs',
+        default_version='1.0.0',
+        description='API Documentation/Contract',
+    ),
+    public=True,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('fixtures/', list_fixtures),
-    path('calendar/', fixtures_by_calendar),
-    path('calendar/<month>/', fixtures_by_calendar),
-    path('api/', include('rest_framework.urls'))
+    path(
+        'schema/',
+        schema_view.with_ui('swagger', cache_timeout=0),
+        name='swagger_schema',
+    ),
+    path('tournament/<uuid:tournament_uuid>/fixtures', ListFixtures.as_view()),
+    path('tournament/<uuid:tournament_uuid>/calendar/<int:month>',
+         ListFixturesByCalendar.as_view())
 ]

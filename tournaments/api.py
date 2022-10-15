@@ -2,7 +2,7 @@ import random
 from datetime import datetime, timedelta
 from typing import List, Tuple
 
-# from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from django.utils import timezone
 
 from tournaments.models import Tournament
@@ -26,19 +26,16 @@ class TournamentApi:
     @classmethod
     def bulk_create(cls, *args, **kwargs) -> List[Tournament]:
         count = kwargs['count']
-        months_in_past = 1
+        months_in_past = settings.DEFAULT_MONTHS_IN_PAST
         days_in_past = 30 * months_in_past
-        total_tournament_months = 2
+        total_tournament_months = settings.DEFAULT_TOURNAMENT_DURATION_IN_MONTHS
         total_tournament_days = 30 * total_tournament_months
 
         tournaments = []
-        allowed_titles = [
-            'EPL',
-            'SERIE A',
-        ]
+        allowed_titles = settings.SUPPORTED_TOURNAMENT_TITLES
         now = timezone.make_aware(datetime.now())
 
-        for i in range(count):
+        for _ in range(count):
             title = random.sample(allowed_titles, 1)
             start_at = now - timedelta(days=days_in_past)
             end_at = start_at + timedelta(days=total_tournament_days)
